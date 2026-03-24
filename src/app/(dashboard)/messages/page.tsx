@@ -99,7 +99,7 @@ export default function MessagesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-charcoal-900">AI Message Center</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-charcoal-900">Techo Message Center</h1>
           <p className="text-sm text-stone-500 mt-0.5">Generate professional emails and texts — copy, paste, send</p>
         </div>
       </div>
@@ -161,7 +161,7 @@ export default function MessagesPage() {
               <div className="flex items-center justify-between p-4 border-b border-stone-100">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-accent" />
-                  <span className="text-sm font-semibold text-charcoal-900">AI Generated Message</span>
+                  <span className="text-sm font-semibold text-charcoal-900">Techo Generated Message</span>
                 </div>
                 <div className="flex items-center gap-2">
                   {/* Toggle */}
@@ -214,7 +214,7 @@ export default function MessagesPage() {
             <div className="bg-white rounded-xl border border-stone-200 flex flex-col items-center justify-center h-96 text-stone-400">
               <MessageSquare className="w-12 h-12 mb-3 text-stone-300" />
               <p className="text-sm font-medium">Select a template to generate a message</p>
-              <p className="text-xs mt-1">AI will personalize it for the selected customer</p>
+              <p className="text-xs mt-1">Techo will personalize it for the selected customer</p>
             </div>
           )}
         </div>

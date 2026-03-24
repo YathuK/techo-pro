@@ -299,7 +299,7 @@ export default function CustomersPage() {
       </SlideDrawer>
 
       {/* Quote Drawer */}
-      <SlideDrawer open={quoteDrawerOpen} onClose={() => setQuoteDrawerOpen(false)} title="AI Quote Builder">
+      <SlideDrawer open={quoteDrawerOpen} onClose={() => setQuoteDrawerOpen(false)} title="Techo Quote Builder">
         {quoteCustomer && (
           <div className="space-y-5">
             {/* Customer Card */}
@@ -341,7 +341,7 @@ export default function CustomersPage() {
             <button onClick={handleGenerateQuote} disabled={quoteGenerating || !quoteDesc.trim()}
               className="w-full py-2.5 bg-gradient-to-r from-accent to-accent-dark text-white rounded-lg text-sm font-semibold hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2">
               {quoteGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-              {quoteGenerating ? "Generating..." : "Generate AI Quote"}
+              {quoteGenerating ? "Generating..." : "Generate Techo Quote"}
             </button>
 
             {/* Generated Quote */}

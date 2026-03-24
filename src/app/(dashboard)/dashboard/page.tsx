@@ -52,7 +52,7 @@ export default function Dashboard() {
           </button>
           <button className="px-3 sm:px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 transition-colors flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-accent" />
-            AI Report
+            Techo Report
           </button>
         </div>
       </div>
@@ -93,7 +93,7 @@ export default function Dashboard() {
         <div className="bg-gradient-to-br from-charcoal-950 to-charcoal-900 rounded-xl p-5 text-cream-200">
           <div className="flex items-center gap-2 mb-4">
             <Sparkles className="w-5 h-5 text-accent" />
-            <h2 className="text-lg font-semibold text-cream-100">AI Insights</h2>
+            <h2 className="text-lg font-semibold text-cream-100">Techo Insights</h2>
           </div>
           <div className="space-y-3">
             {aiInsights.map((insight, i) => (
@@ -107,7 +107,7 @@ export default function Dashboard() {
             ))}
           </div>
           <button className="w-full mt-4 py-2.5 bg-accent/20 border border-accent/30 rounded-lg text-sm font-medium text-accent hover:bg-accent/30 transition-colors">
-            Get Full AI Analysis
+            Get Full Techo Analysis
           </button>
         </div>
       </div>

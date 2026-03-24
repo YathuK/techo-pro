@@ -23,7 +23,7 @@ export default function Header() {
   const [showAiChat, setShowAiChat] = useState(false);
   const [aiInput, setAiInput] = useState("");
   const [aiMessages, setAiMessages] = useState<{ role: string; text: string }[]>([
-    { role: "ai", text: "Hi! I'm your Techo-Pro AI assistant. Ask me anything about managing your hardscaping business — quotes, scheduling, inventory, or follow-ups." },
+    { role: "ai", text: "Hi! I'm your Techo assistant. Ask me anything about managing your hardscaping business — quotes, scheduling, inventory, or follow-ups." },
   ]);
   const searchRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
@@ -51,8 +51,8 @@ export default function Header() {
     const pages = [
       { label: "Dashboard", href: "/dashboard", keywords: ["dashboard", "home", "overview", "revenue"] },
       { label: "Customers", href: "/customers", keywords: ["customer", "client", "lead", "contact", "crm"] },
-      { label: "AI Quotes", href: "/quotes", keywords: ["quote", "estimate", "bid", "price", "proposal"] },
-      { label: "AI Messages", href: "/messages", keywords: ["message", "email", "text", "sms", "follow"] },
+      { label: "Techo Quotes", href: "/quotes", keywords: ["quote", "estimate", "bid", "price", "proposal"] },
+      { label: "Techo Messages", href: "/messages", keywords: ["message", "email", "text", "sms", "follow"] },
       { label: "Employees", href: "/employees", keywords: ["employee", "crew", "team", "worker", "staff"] },
       { label: "Jobs", href: "/jobs", keywords: ["job", "project", "schedule", "calendar", "work"] },
       { label: "Inventory", href: "/inventory", keywords: ["inventory", "stock", "material", "paver", "sand", "gravel"] },
@@ -222,7 +222,7 @@ export default function Header() {
             className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 bg-gradient-to-r from-accent/10 to-accent/5 border border-accent/20 rounded-lg text-sm font-medium text-accent hover:from-accent/20 hover:to-accent/10 transition-all ai-glow"
           >
             <Sparkles className="w-4 h-4" />
-            <span className="hidden sm:inline">Ask AI</span>
+            <span className="hidden sm:inline">Ask Techo</span>
           </button>
 
           <button className="relative p-2 text-stone-500 hover:text-charcoal-900 hover:bg-stone-100 rounded-lg transition-colors">
@@ -263,7 +263,7 @@ export default function Header() {
         <div className={`fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${showAiChat ? "opacity-100" : "opacity-0"}`} onClick={() => setShowAiChat(false)} />
         <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl transition-transform duration-300 ease-out flex flex-col ${showAiChat ? "translate-x-0" : "translate-x-full"}`}>
           <div className="flex items-center justify-between px-6 py-4 border-b border-stone-200">
-            <div className="flex items-center gap-2"><Sparkles className="w-5 h-5 text-accent" /><h2 className="text-lg font-semibold text-charcoal-900">AI Assistant</h2></div>
+            <div className="flex items-center gap-2"><Sparkles className="w-5 h-5 text-accent" /><h2 className="text-lg font-semibold text-charcoal-900">Techo Assistant</h2></div>
             <button onClick={() => setShowAiChat(false)} className="p-1.5 hover:bg-stone-100 rounded-lg"><X className="w-5 h-5 text-stone-500" /></button>
           </div>
           <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">

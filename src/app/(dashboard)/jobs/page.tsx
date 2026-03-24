@@ -385,7 +385,7 @@ export default function JobsPage() {
           <Sparkles className="w-5 h-5 text-accent flex-shrink-0 mt-0.5 sm:mt-0" />
           <div>
             <p className="text-sm font-medium text-charcoal-900">
-              AI Optimizer: Scheduling insights available
+              Techo Optimizer: Scheduling insights available
             </p>
             <p className="text-xs text-stone-500">
               Review your current jobs to find optimization opportunities.

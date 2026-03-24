@@ -86,7 +86,7 @@ Valid for: 30 days`);
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-charcoal-900">AI Quote Builder</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-charcoal-900">Techo Quote Builder</h1>
           <p className="text-sm text-stone-500 mt-0.5">Create professional quotes in seconds with AI</p>
         </div>
         <div className="flex gap-3">
@@ -98,8 +98,8 @@ Valid for: 30 days`);
             className="px-3 sm:px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 flex items-center gap-2"
           >
             <Sparkles className="w-4 h-4 text-accent" />
-            <span className="hidden sm:inline">{showAiBuilder ? "View Quotes" : "AI Quote Builder"}</span>
-            <span className="sm:hidden">{showAiBuilder ? "Quotes" : "AI Builder"}</span>
+            <span className="hidden sm:inline">{showAiBuilder ? "View Quotes" : "Techo Quote Builder"}</span>
+            <span className="sm:hidden">{showAiBuilder ? "Quotes" : "Techo Builder"}</span>
           </button>
         </div>
       </div>
@@ -150,7 +150,7 @@ Valid for: 30 days`);
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-4 h-4" /> Generate AI Quote
+                    <Sparkles className="w-4 h-4" /> Generate Techo Quote
                   </>
                 )}
               </button>
@@ -158,7 +158,7 @@ Valid for: 30 days`);
 
             {/* Quick Tips */}
             <div className="bg-accent/5 border border-accent/15 rounded-xl p-4">
-              <p className="text-sm font-medium text-charcoal-900 mb-2">AI Tips for Better Quotes</p>
+              <p className="text-sm font-medium text-charcoal-900 mb-2">Techo Tips for Better Quotes</p>
               <ul className="space-y-1.5 text-xs text-stone-600">
                 <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 text-accent mt-0.5 flex-shrink-0" /> Include dimensions (sq ft, linear ft) for accurate material estimates</li>
                 <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 text-accent mt-0.5 flex-shrink-0" /> Mention specific Techo-Bloc products for precise pricing</li>

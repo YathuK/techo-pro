@@ -92,12 +92,12 @@ function FloatingParticles() {
 }
 
 const features = [
-  { icon: FileText, title: "AI Quote Builder", desc: "Describe a project in plain English. Get a detailed, itemized quote with Techo-Bloc products, labor, and materials in seconds.", accent: "from-amber-500/20 to-amber-500/5", iconBg: "bg-amber-500/10 text-amber-400", wide: true },
+  { icon: FileText, title: "Techo Quote Builder", desc: "Describe a project in plain English. Get a detailed, itemized quote with Techo-Bloc products, labor, and materials in seconds.", accent: "from-amber-500/20 to-amber-500/5", iconBg: "bg-amber-500/10 text-amber-400", wide: true },
   { icon: MessageSquare, title: "Smart Messages", desc: "Auto-generate follow-ups, completion notices, and payment reminders. Copy, paste, send.", accent: "from-blue-500/20 to-blue-500/5", iconBg: "bg-blue-500/10 text-blue-400" },
-  { icon: Users, title: "Customer CRM", desc: "Track every lead, client, and job history. AI flags who needs a follow-up.", accent: "from-emerald-500/20 to-emerald-500/5", iconBg: "bg-emerald-500/10 text-emerald-400" },
-  { icon: Briefcase, title: "Job Tracking", desc: "Grid, list, or calendar view. Real-time progress bars. AI schedule optimization.", accent: "from-violet-500/20 to-violet-500/5", iconBg: "bg-violet-500/10 text-violet-400" },
+  { icon: Users, title: "Customer CRM", desc: "Track every lead, client, and job history. Techo flags who needs a follow-up.", accent: "from-emerald-500/20 to-emerald-500/5", iconBg: "bg-emerald-500/10 text-emerald-400" },
+  { icon: Briefcase, title: "Job Tracking", desc: "Grid, list, or calendar view. Real-time progress bars. Techo schedule optimization.", accent: "from-violet-500/20 to-violet-500/5", iconBg: "bg-violet-500/10 text-violet-400" },
   { icon: Package, title: "Inventory", desc: "Track every paver, bag of sand, and roll of fabric. Auto-reorder alerts when stock runs low.", accent: "from-rose-500/20 to-rose-500/5", iconBg: "bg-rose-500/10 text-rose-400" },
-  { icon: Receipt, title: "Invoicing", desc: "Create, send, and track invoices. AI drafts payment reminders for overdue accounts.", accent: "from-cyan-500/20 to-cyan-500/5", iconBg: "bg-cyan-500/10 text-cyan-400", wide: true },
+  { icon: Receipt, title: "Invoicing", desc: "Create, send, and track invoices. Techo drafts payment reminders for overdue accounts.", accent: "from-cyan-500/20 to-cyan-500/5", iconBg: "bg-cyan-500/10 text-cyan-400", wide: true },
 ];
 
 const metrics = [
@@ -108,7 +108,7 @@ const metrics = [
 ];
 
 const testimonials = [
-  { quote: "We used to spend 2 hours on every quote. Now it takes 5 minutes. The AI knows Techo-Bloc products better than I do.", name: "Carlos Rivera", title: "Owner, Rivera Hardscaping", location: "Toronto, ON" },
+  { quote: "We used to spend 2 hours on every quote. Now it takes 5 minutes. Techo knows Techo-Bloc products better than I do.", name: "Carlos Rivera", title: "Owner, Rivera Hardscaping", location: "Toronto, ON" },
   { quote: "The calendar view alone changed how we schedule crews. No more double-bookings, no more missed starts.", name: "Sarah Mitchell", title: "Operations Manager, Mitchell Paving Co.", location: "Mississauga, ON" },
   { quote: "My guys in the field can see what's next. My office knows what's overdue. Everything just works.", name: "James Park", title: "Founder, Precision Landscapes", location: "Burlington, ON" },
 ];
@@ -164,7 +164,7 @@ export default function LandingPage() {
             {/* Badge */}
             <div className="animate-fade-in-up inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/20 bg-accent/5 mb-8">
               <Sparkles className="w-3.5 h-3.5 text-accent animate-sparkle" />
-              <span className="text-xs font-medium text-accent">AI-powered hardscaping management</span>
+              <span className="text-xs font-medium text-accent">Techo-powered hardscaping management</span>
             </div>
 
             {/* Headline */}
@@ -177,7 +177,7 @@ export default function LandingPage() {
             {/* Sub */}
             <p className="animate-fade-in-up animate-delay-400 mt-6 text-base sm:text-lg text-charcoal-400 max-w-xl mx-auto leading-relaxed">
               Quotes, schedules, crews, inventory, invoices — one platform
-              with AI that actually understands hardscaping.
+              with Techo that actually understands hardscaping.
             </p>
 
             {/* CTAs */}
@@ -243,7 +243,7 @@ export default function LandingPage() {
                   <div className="bg-charcoal-900 rounded-lg p-3">
                     <div className="flex items-center gap-1.5 mb-2">
                       <Sparkles className="w-3 h-3 text-accent animate-sparkle" />
-                      <p className="text-xs font-semibold text-cream-100">AI Insights</p>
+                      <p className="text-xs font-semibold text-cream-100">Techo Insights</p>
                     </div>
                     <p className="text-[10px] text-charcoal-400 leading-relaxed">3 quotes pending — follow up to close $47K in pipeline</p>
                   </div>
@@ -334,21 +334,21 @@ export default function LandingPage() {
           <div className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-700 ${aiView.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/20 bg-accent/5 mb-6">
               <Sparkles className="w-3.5 h-3.5 text-accent animate-sparkle" />
-              <span className="text-xs font-medium text-accent">Powered by AI</span>
+              <span className="text-xs font-medium text-accent">Powered by Techo</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold text-cream-50 tracking-tight">
-              AI that speaks hardscaping.
+              Techo speaks hardscaping.
             </h2>
             <p className="mt-4 text-charcoal-400 text-base">
-              Not a generic chatbot. An AI trained on Techo-Bloc products, real material costs,
+              Not a generic tool. Techo is trained on Techo-Bloc products, real material costs,
               labor estimates, and the way contractors actually work.
             </p>
           </div>
 
           <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 stagger-children ${aiView.isVisible ? "is-visible" : ""}`}>
             {[
-              { icon: Zap, title: "Instant Quotes", desc: "Describe a project. AI calculates materials, labor, markup, and HST. Generates a professional PDF-ready quote." },
-              { icon: Clock, title: "Smart Scheduling", desc: "AI spots gaps in your crew schedules and suggests optimal job assignments based on skills and location." },
+              { icon: Zap, title: "Instant Quotes", desc: "Describe a project. Techo calculates materials, labor, markup, and HST. Generates a professional PDF-ready quote." },
+              { icon: Clock, title: "Smart Scheduling", desc: "Techo spots gaps in your crew schedules and suggests optimal job assignments based on skills and location." },
               { icon: Shield, title: "Proactive Alerts", desc: "Low stock warnings, overdue invoice reminders, and follow-up nudges — before you have to think about it." },
             ].map((item) => (
               <div
@@ -413,9 +413,9 @@ export default function LandingPage() {
 
           <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto stagger-children ${pricingView.isVisible ? "is-visible" : ""}`}>
             {[
-              { name: "Starter", price: "Free", period: "", desc: "For solo contractors getting started", features: ["1 user", "Up to 10 customers", "AI quote builder", "Basic invoicing", "Email support"], cta: "Get started", highlight: false },
-              { name: "Pro", price: "$49", period: "/mo", desc: "For growing hardscaping businesses", features: ["Unlimited users", "Unlimited customers", "AI quotes & messages", "Full inventory tracking", "Calendar scheduling", "Priority support"], cta: "Start free trial", highlight: true },
-              { name: "Business", price: "$149", period: "/mo", desc: "For multi-crew operations", features: ["Everything in Pro", "Multi-crew management", "Advanced AI analytics", "Custom quote templates", "API access", "Dedicated account manager"], cta: "Contact sales", highlight: false },
+              { name: "Starter", price: "Free", period: "", desc: "For solo contractors getting started", features: ["1 user", "Up to 10 customers", "Techo quote builder", "Basic invoicing", "Email support"], cta: "Get started", highlight: false },
+              { name: "Pro", price: "$49", period: "/mo", desc: "For growing hardscaping businesses", features: ["Unlimited users", "Unlimited customers", "Techo quotes & messages", "Full inventory tracking", "Calendar scheduling", "Priority support"], cta: "Start free trial", highlight: true },
+              { name: "Business", price: "$149", period: "/mo", desc: "For multi-crew operations", features: ["Everything in Pro", "Multi-crew management", "Advanced Techo analytics", "Custom quote templates", "API access", "Dedicated account manager"], cta: "Contact sales", highlight: false },
             ].map((plan) => (
               <div
                 key={plan.name}

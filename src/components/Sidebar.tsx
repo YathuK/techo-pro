@@ -23,14 +23,14 @@ import clsx from "clsx";
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/customers", label: "Customers", icon: Users },
-  { href: "/quotes", label: "AI Quotes", icon: FileText, ai: true },
+  { href: "/quotes", label: "Techo Quotes", icon: FileText, ai: true },
   { href: "/jobs", label: "Jobs", icon: Briefcase },
   { href: "/invoices", label: "Invoices", icon: Receipt },
 ];
 
 const opsItems = [
-  { href: "/employees", label: "Employees", icon: UserCog },
   { href: "/inventory", label: "Inventory", icon: Package },
+  { href: "/employees", label: "Employees", icon: UserCog },
 ];
 
 export default function Sidebar() {
@@ -158,15 +158,15 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* AI Assistant Promo */}
+      {/* Techo Assistant Promo */}
       {(!collapsed || mobileOpen) && (
         <div className="mx-3 mb-4 p-4 bg-gradient-to-br from-accent/20 to-accent/5 rounded-xl border border-accent/20">
           <div className="flex items-center gap-2 mb-2">
             <Sparkles className="w-4 h-4 text-accent" />
-            <span className="text-sm font-semibold text-cream-100">AI Assistant</span>
+            <span className="text-sm font-semibold text-cream-100">Techo Assistant</span>
           </div>
           <p className="text-xs text-charcoal-400 leading-relaxed">
-            Let AI build quotes, draft messages, and manage your business smarter.
+            Let Techo build quotes, draft messages, and manage your business smarter.
           </p>
         </div>
       )}

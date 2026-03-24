@@ -3,8 +3,8 @@ import "./globals.css";
 import SessionProvider from "@/components/SessionProvider";
 
 export const metadata: Metadata = {
-  title: "Techo-Pro | AI-Powered Business Management for Hardscaping Contractors",
-  description: "Manage your hardscaping business with AI. Quotes, invoices, customers, employees, jobs, and inventory — all in one place.",
+  title: "Techo-Pro | Smart Business Management for Hardscaping Contractors",
+  description: "Manage your hardscaping business with Techo. Quotes, invoices, customers, employees, jobs, and inventory — all in one place.",
 };
 
 export default function RootLayout({
