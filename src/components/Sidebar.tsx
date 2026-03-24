@@ -22,7 +22,7 @@ import {
 import clsx from "clsx";
 
 const navItems = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/customers", label: "Customers", icon: Users },
   { href: "/quotes", label: "AI Quotes", icon: FileText, ai: true },
   { href: "/messages", label: "AI Messages", icon: MessageSquare, ai: true },
