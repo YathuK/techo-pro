@@ -43,9 +43,7 @@ export async function POST(req: Request) {
       notes: body.notes || null,
       userId: user.id,
       customerId: body.customerId,
-      crew: body.crewIds
-        ? { connect: body.crewIds.map((id: string) => ({ id })) }
-        : undefined,
+      crewIds: body.crewIds || [],
     },
     include: {
       customer: { select: { id: true, name: true } },

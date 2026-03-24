@@ -44,9 +44,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       progress: body.progress,
       materials: body.materials,
       notes: body.notes,
-      crew: body.crewIds
-        ? { set: body.crewIds.map((id: string) => ({ id })) }
-        : undefined,
+      crewIds: body.crewIds ?? undefined,
     },
     include: {
       customer: { select: { id: true, name: true } },
