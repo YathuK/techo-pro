@@ -198,41 +198,67 @@ Valid for: 30 days`);
         </div>
       ) : (
         /* Quotes List */
-        <div className="bg-white rounded-xl border border-stone-200 overflow-x-auto">
-          <table className="w-full min-w-[700px]">
-            <thead>
-              <tr className="border-b border-stone-100 bg-stone-50">
-                <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Quote</th>
-                <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Client</th>
-                <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Project</th>
-                <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Value</th>
-                <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Status</th>
-                <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Date</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-stone-100">
-              {quotes.map((quote) => (
-                <tr key={quote.id} className="hover:bg-stone-50 transition-colors cursor-pointer">
-                  <td className="px-5 py-3.5">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-charcoal-900">{quote.id}</span>
-                      {quote.aiGenerated && <Sparkles className="w-3.5 h-3.5 text-accent" />}
-                    </div>
-                  </td>
-                  <td className="px-5 py-3.5 text-sm text-charcoal-700">{quote.client}</td>
-                  <td className="px-5 py-3.5 text-sm text-charcoal-700">{quote.project}</td>
-                  <td className="px-5 py-3.5 text-sm font-semibold text-charcoal-900">{quote.value}</td>
-                  <td className="px-5 py-3.5">
-                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${statusColors[quote.status]}`}>
-                      {statusIcons[quote.status]} {quote.status}
-                    </span>
-                  </td>
-                  <td className="px-5 py-3.5 text-sm text-stone-500">{quote.date}</td>
+        <>
+          {/* Desktop Table */}
+          <div className="hidden md:block bg-white rounded-xl border border-stone-200 overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-stone-100 bg-stone-50">
+                  <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Quote</th>
+                  <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Client</th>
+                  <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Project</th>
+                  <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Value</th>
+                  <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Status</th>
+                  <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-stone-100">
+                {quotes.map((quote) => (
+                  <tr key={quote.id} className="hover:bg-stone-50 transition-colors cursor-pointer">
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium text-charcoal-900">{quote.id}</span>
+                        {quote.aiGenerated && <Sparkles className="w-3.5 h-3.5 text-accent" />}
+                      </div>
+                    </td>
+                    <td className="px-5 py-3.5 text-sm text-charcoal-700">{quote.client}</td>
+                    <td className="px-5 py-3.5 text-sm text-charcoal-700">{quote.project}</td>
+                    <td className="px-5 py-3.5 text-sm font-semibold text-charcoal-900">{quote.value}</td>
+                    <td className="px-5 py-3.5">
+                      <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${statusColors[quote.status]}`}>
+                        {statusIcons[quote.status]} {quote.status}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5 text-sm text-stone-500">{quote.date}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="md:hidden space-y-3">
+            {quotes.map((quote) => (
+              <div key={quote.id} className="bg-white rounded-xl border border-stone-200 p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-charcoal-900">{quote.id}</span>
+                    {quote.aiGenerated && <Sparkles className="w-3.5 h-3.5 text-accent" />}
+                  </div>
+                  <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${statusColors[quote.status]}`}>
+                    {statusIcons[quote.status]} {quote.status}
+                  </span>
+                </div>
+                <p className="text-sm font-medium text-charcoal-900">{quote.client}</p>
+                <p className="text-xs text-stone-500 mt-0.5">{quote.project}</p>
+                <div className="flex items-center justify-between mt-3 pt-3 border-t border-stone-100">
+                  <span className="text-base font-bold text-charcoal-900">{quote.value}</span>
+                  <span className="text-xs text-stone-500">{quote.date}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

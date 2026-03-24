@@ -63,25 +63,58 @@ export default function InvoicesPage() {
       {loading ? (<div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-accent" /></div>
       ) : invoices.length === 0 ? (<div className="text-center py-20"><Sparkles className="w-10 h-10 text-stone-300 mx-auto mb-3" /><p className="text-sm font-medium text-stone-500">No invoices yet</p></div>
       ) : (
-        <div className="bg-white rounded-xl border border-stone-200 overflow-x-auto">
-          <table className="w-full min-w-[750px]">
-            <thead><tr className="border-b border-stone-100 bg-stone-50">
-              {["Invoice","Client","Amount","Balance","Status","Due",""].map((h) => <th key={h} className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">{h}</th>)}
-            </tr></thead>
-            <tbody className="divide-y divide-stone-100">{invoices.map((inv) => {
+        <>
+          {/* Desktop table */}
+          <div className="hidden md:block overflow-x-auto bg-white rounded-xl border border-stone-200">
+            <table className="w-full min-w-[750px]">
+              <thead><tr className="border-b border-stone-100 bg-stone-50">
+                {["Invoice","Client","Amount","Balance","Status","Due",""].map((h) => <th key={h} className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">{h}</th>)}
+              </tr></thead>
+              <tbody className="divide-y divide-stone-100">{invoices.map((inv) => {
+                const sc = statusConfig[inv.status] || statusConfig.Draft;
+                return (<tr key={inv.id} className={`hover:bg-stone-50 ${inv.status === "Overdue" ? "bg-danger/5" : ""}`}>
+                  <td className="px-5 py-3.5 text-sm font-semibold text-charcoal-900">{inv.invoiceNumber}</td>
+                  <td className="px-5 py-3.5 text-sm text-charcoal-700">{inv.customer?.name}</td>
+                  <td className="px-5 py-3.5 text-sm font-semibold text-charcoal-900">${inv.amount.toLocaleString()}</td>
+                  <td className="px-5 py-3.5 text-sm font-semibold text-charcoal-900">${(inv.amount - inv.paid).toLocaleString()}</td>
+                  <td className="px-5 py-3.5"><span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${sc.color}`}>{sc.icon} {inv.status}</span></td>
+                  <td className="px-5 py-3.5 text-sm text-stone-500">{inv.dueDate ? new Date(inv.dueDate).toLocaleDateString() : "—"}</td>
+                  <td className="px-3 py-3.5"><button onClick={() => handleDelete(inv.id)} className="p-1.5 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4 text-stone-400 hover:text-danger" /></button></td>
+                </tr>);
+              })}</tbody>
+            </table>
+          </div>
+
+          {/* Mobile cards */}
+          <div className="md:hidden space-y-3">
+            {invoices.map((inv) => {
               const sc = statusConfig[inv.status] || statusConfig.Draft;
-              return (<tr key={inv.id} className={`hover:bg-stone-50 ${inv.status === "Overdue" ? "bg-danger/5" : ""}`}>
-                <td className="px-5 py-3.5 text-sm font-semibold text-charcoal-900">{inv.invoiceNumber}</td>
-                <td className="px-5 py-3.5 text-sm text-charcoal-700">{inv.customer?.name}</td>
-                <td className="px-5 py-3.5 text-sm font-semibold text-charcoal-900">${inv.amount.toLocaleString()}</td>
-                <td className="px-5 py-3.5 text-sm font-semibold text-charcoal-900">${(inv.amount - inv.paid).toLocaleString()}</td>
-                <td className="px-5 py-3.5"><span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${sc.color}`}>{sc.icon} {inv.status}</span></td>
-                <td className="px-5 py-3.5 text-sm text-stone-500">{inv.dueDate ? new Date(inv.dueDate).toLocaleDateString() : "—"}</td>
-                <td className="px-3 py-3.5"><button onClick={() => handleDelete(inv.id)} className="p-1.5 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4 text-stone-400 hover:text-danger" /></button></td>
-              </tr>);
-            })}</tbody>
-          </table>
-        </div>
+              return (
+                <div key={inv.id} className={`bg-white rounded-xl border border-stone-200 p-4 space-y-3 ${inv.status === "Overdue" ? "bg-danger/5" : ""}`}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-bold text-charcoal-900">{inv.invoiceNumber}</span>
+                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${sc.color}`}>{sc.icon} {inv.status}</span>
+                  </div>
+                  <p className="text-sm text-charcoal-700">{inv.customer?.name}</p>
+                  <div className="flex items-center gap-6">
+                    <div>
+                      <p className="text-xs text-stone-500">Amount</p>
+                      <p className="text-sm font-semibold text-charcoal-900">${inv.amount.toLocaleString()}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-stone-500">Balance</p>
+                      <p className="text-sm font-semibold text-charcoal-900">${(inv.amount - inv.paid).toLocaleString()}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between pt-1 border-t border-stone-100">
+                    <span className="text-xs text-stone-500">{inv.dueDate ? new Date(inv.dueDate).toLocaleDateString() : "No due date"}</span>
+                    <button onClick={() => handleDelete(inv.id)} className="p-1.5 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4 text-stone-400 hover:text-danger" /></button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
 
       <SlideDrawer open={showAdd} onClose={() => setShowAdd(false)} title="New Invoice">

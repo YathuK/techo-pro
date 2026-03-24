@@ -49,25 +49,61 @@ export default function InventoryPage() {
       {loading ? (<div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-accent" /></div>
       ) : filtered.length === 0 ? (<div className="text-center py-20"><Sparkles className="w-10 h-10 text-stone-300 mx-auto mb-3" /><p className="text-sm font-medium text-stone-500">{items.length === 0 ? "No items yet" : "No matches"}</p></div>
       ) : (
-        <div className="bg-white rounded-xl border border-stone-200 overflow-x-auto">
-          <table className="w-full min-w-[800px]">
-            <thead><tr className="border-b border-stone-100 bg-stone-50">
-              {["Item","Category","In Stock","Reorder At","Unit Price","Value","Location",""].map((h) => <th key={h} className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">{h}</th>)}
-            </tr></thead>
-            <tbody className="divide-y divide-stone-100">{filtered.map((item) => (
-              <tr key={item.id} className={`hover:bg-stone-50 ${item.inStock <= item.reorderPoint ? "bg-danger/5" : ""}`}>
-                <td className="px-5 py-3.5 text-sm font-medium text-charcoal-900">{item.name}</td>
-                <td className="px-5 py-3.5 text-sm text-stone-600">{item.category}</td>
-                <td className="px-5 py-3.5"><span className={`text-sm font-semibold ${item.inStock <= item.reorderPoint ? "text-danger" : "text-charcoal-900"}`}>{item.inStock.toLocaleString()} {item.unit}</span></td>
-                <td className="px-5 py-3.5 text-sm text-stone-500">{item.reorderPoint} {item.unit}</td>
-                <td className="px-5 py-3.5 text-sm text-charcoal-700">${item.price.toFixed(2)}/{item.unit}</td>
-                <td className="px-5 py-3.5 text-sm font-medium text-charcoal-900">${(item.inStock * item.price).toLocaleString()}</td>
-                <td className="px-5 py-3.5 text-sm text-stone-600">{item.location || "—"}</td>
-                <td className="px-3 py-3.5"><button onClick={() => handleDelete(item.id)} className="p-1.5 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4 text-stone-400 hover:text-danger" /></button></td>
-              </tr>
-            ))}</tbody>
-          </table>
-        </div>
+        <>
+          {/* Desktop table */}
+          <div className="hidden md:block overflow-x-auto bg-white rounded-xl border border-stone-200">
+            <table className="w-full min-w-[800px]">
+              <thead><tr className="border-b border-stone-100 bg-stone-50">
+                {["Item","Category","In Stock","Reorder At","Unit Price","Value","Location",""].map((h) => <th key={h} className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">{h}</th>)}
+              </tr></thead>
+              <tbody className="divide-y divide-stone-100">{filtered.map((item) => (
+                <tr key={item.id} className={`hover:bg-stone-50 ${item.inStock <= item.reorderPoint ? "bg-danger/5" : ""}`}>
+                  <td className="px-5 py-3.5 text-sm font-medium text-charcoal-900">{item.name}</td>
+                  <td className="px-5 py-3.5 text-sm text-stone-600">{item.category}</td>
+                  <td className="px-5 py-3.5"><span className={`text-sm font-semibold ${item.inStock <= item.reorderPoint ? "text-danger" : "text-charcoal-900"}`}>{item.inStock.toLocaleString()} {item.unit}</span></td>
+                  <td className="px-5 py-3.5 text-sm text-stone-500">{item.reorderPoint} {item.unit}</td>
+                  <td className="px-5 py-3.5 text-sm text-charcoal-700">${item.price.toFixed(2)}/{item.unit}</td>
+                  <td className="px-5 py-3.5 text-sm font-medium text-charcoal-900">${(item.inStock * item.price).toLocaleString()}</td>
+                  <td className="px-5 py-3.5 text-sm text-stone-600">{item.location || "—"}</td>
+                  <td className="px-3 py-3.5"><button onClick={() => handleDelete(item.id)} className="p-1.5 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4 text-stone-400 hover:text-danger" /></button></td>
+                </tr>
+              ))}</tbody>
+            </table>
+          </div>
+
+          {/* Mobile cards */}
+          <div className="md:hidden space-y-3">
+            {filtered.map((item) => (
+              <div key={item.id} className={`bg-white rounded-xl border p-4 ${item.inStock <= item.reorderPoint ? "border-danger/30 bg-danger/5" : "border-stone-200"}`}>
+                <div className="flex items-start justify-between gap-2 mb-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold text-charcoal-900 truncate">{item.name}</p>
+                    <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-stone-100 text-stone-600 rounded-full">{item.category}</span>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 mb-3">
+                  <div>
+                    <p className="text-xs text-stone-500">In Stock</p>
+                    <p className={`text-sm font-semibold ${item.inStock <= item.reorderPoint ? "text-danger" : "text-charcoal-900"}`}>{item.inStock.toLocaleString()} {item.unit}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-stone-500">Reorder At</p>
+                    <p className="text-sm text-stone-600">{item.reorderPoint} {item.unit}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-stone-500">Unit Price</p>
+                    <p className="text-sm text-charcoal-700">${item.price.toFixed(2)}/{item.unit}</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between pt-2 border-t border-stone-100">
+                  <span className="text-xs text-stone-500">{item.location || "No location"}</span>
+                  <span className="text-sm font-medium text-charcoal-900">${(item.inStock * item.price).toLocaleString()}</span>
+                  <button onClick={() => handleDelete(item.id)} className="p-1.5 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4 text-stone-400 hover:text-danger" /></button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       <SlideDrawer open={showAdd} onClose={() => setShowAdd(false)} title="Add Inventory Item">
