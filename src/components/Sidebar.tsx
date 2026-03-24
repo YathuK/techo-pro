@@ -7,7 +7,6 @@ import {
   LayoutDashboard,
   Users,
   FileText,
-  MessageSquare,
   UserCog,
   Briefcase,
   Package,
@@ -25,11 +24,13 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/customers", label: "Customers", icon: Users },
   { href: "/quotes", label: "AI Quotes", icon: FileText, ai: true },
-  { href: "/messages", label: "AI Messages", icon: MessageSquare, ai: true },
-  { href: "/employees", label: "Employees", icon: UserCog },
   { href: "/jobs", label: "Jobs", icon: Briefcase },
-  { href: "/inventory", label: "Inventory", icon: Package },
   { href: "/invoices", label: "Invoices", icon: Receipt },
+];
+
+const opsItems = [
+  { href: "/employees", label: "Employees", icon: UserCog },
+  { href: "/inventory", label: "Inventory", icon: Package },
 ];
 
 export default function Sidebar() {
@@ -107,6 +108,45 @@ export default function Sidebar() {
               )}
               {(!collapsed || mobileOpen) && item.ai && (
                 <Sparkles className="w-3.5 h-3.5 text-accent ml-auto" />
+              )}
+              {collapsed && !mobileOpen && (
+                <div className="absolute left-full ml-2 px-2 py-1 bg-charcoal-900 text-cream-200 text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50">
+                  {item.label}
+                </div>
+              )}
+            </Link>
+          );
+        })}
+
+        {/* Operations Section */}
+        {(!collapsed || mobileOpen) && (
+          <p className="px-3 pt-5 pb-1 text-[10px] font-semibold text-charcoal-600 uppercase tracking-widest">
+            Operations
+          </p>
+        )}
+        {collapsed && !mobileOpen && <div className="my-3 mx-3 border-t border-charcoal-800" />}
+        {opsItems.map((item) => {
+          const isActive = pathname === item.href;
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={clsx(
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group relative",
+                isActive
+                  ? "bg-accent/15 text-accent"
+                  : "text-charcoal-400 hover:text-cream-200 hover:bg-charcoal-900"
+              )}
+            >
+              <Icon
+                className={clsx(
+                  "w-5 h-5 flex-shrink-0",
+                  isActive ? "text-accent" : "text-charcoal-500 group-hover:text-cream-300"
+                )}
+              />
+              {(!collapsed || mobileOpen) && (
+                <span className="text-sm font-medium">{item.label}</span>
               )}
               {collapsed && !mobileOpen && (
                 <div className="absolute left-full ml-2 px-2 py-1 bg-charcoal-900 text-cream-200 text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50">

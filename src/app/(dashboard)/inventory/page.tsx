@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Package, AlertTriangle, Plus, Search, Sparkles, Loader2, Trash2, BarChart3 } from "lucide-react";
+import { Package, AlertTriangle, Plus, Sparkles, Loader2, Trash2, BarChart3 } from "lucide-react";
 import SlideDrawer from "@/components/SlideDrawer";
 
 interface InventoryItem { id: string; name: string; category: string; unit: string; inStock: number; reorderPoint: number; price: number; location: string | null; }
@@ -9,7 +9,6 @@ interface InventoryItem { id: string; name: string; category: string; unit: stri
 export default function InventoryPage() {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
   const [showAdd, setShowAdd] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ name: "", category: "Pavers", unit: "sq ft", inStock: 0, reorderPoint: 0, price: 0, location: "" });
@@ -28,7 +27,7 @@ export default function InventoryPage() {
 
   const lowStock = items.filter((i) => i.inStock <= i.reorderPoint);
   const totalValue = items.reduce((s, i) => s + i.inStock * i.price, 0);
-  const filtered = items.filter((i) => i.name.toLowerCase().includes(searchTerm.toLowerCase()) || i.category.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filtered = items;
 
   return (
     <div className="space-y-6">
@@ -46,7 +45,6 @@ export default function InventoryPage() {
         <div className="bg-white rounded-xl border border-stone-200 p-4 flex items-center gap-4"><div className="p-2.5 bg-success/10 rounded-lg"><Package className="w-5 h-5 text-success" /></div><div><p className="text-xs text-stone-500">Total Value</p><p className="text-xl font-bold text-charcoal-900">${totalValue.toLocaleString()}</p></div></div>
       </div>
 
-      <div className="relative max-w-sm"><Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" /><input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 bg-white border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
 
       {loading ? (<div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-accent" /></div>
       ) : filtered.length === 0 ? (<div className="text-center py-20"><Sparkles className="w-10 h-10 text-stone-300 mx-auto mb-3" /><p className="text-sm font-medium text-stone-500">{items.length === 0 ? "No items yet" : "No matches"}</p></div>

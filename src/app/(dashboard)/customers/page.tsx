@@ -3,11 +3,9 @@
 import { useState, useEffect, useCallback } from "react";
 import {
   Plus,
-  Search,
   Phone,
   Mail,
   MapPin,
-  Filter,
   Download,
   Sparkles,
   Trash2,
@@ -68,7 +66,6 @@ function timeAgo(dateStr: string) {
 export default function CustomersPage() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", address: "", status: "Lead", notes: "" });
@@ -101,11 +98,7 @@ export default function CustomersPage() {
 
   useEffect(() => { fetchCustomers(); }, [fetchCustomers]);
 
-  const filtered = customers.filter((c) =>
-    c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (c.email || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (c.phone || "").includes(searchTerm)
-  );
+  const filtered = customers;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -225,24 +218,13 @@ export default function CustomersPage() {
         </div>
       </div>
 
-      {/* Search */}
-      <div className="flex items-center gap-3">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
-          <input type="text" placeholder="Search customers..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-white border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" />
-        </div>
-        <button className="px-3 py-2 bg-white border border-stone-200 rounded-lg text-sm text-charcoal-700 hover:bg-stone-50 flex items-center gap-2">
-          <Filter className="w-4 h-4" /> Filter
-        </button>
-      </div>
 
       {/* Table */}
       <div className="bg-white rounded-xl border border-stone-200 overflow-x-auto">
         {loading ? (
           <div className="flex items-center justify-center py-16"><Loader2 className="w-6 h-6 text-stone-400 animate-spin" /></div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-16"><p className="text-sm text-stone-500">{searchTerm ? "No customers match your search." : "No customers yet. Add your first customer."}</p></div>
+          <div className="text-center py-16"><p className="text-sm text-stone-500">No customers yet. Add your first customer.</p></div>
         ) : (
           <table className="w-full min-w-[800px]">
             <thead>
