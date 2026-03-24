@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Plus, Send, Download, CheckCircle2, Clock, AlertCircle, DollarSign, Sparkles, Loader2, Trash2 } from "lucide-react";
-import Modal from "@/components/Modal";
+import SlideDrawer from "@/components/SlideDrawer";
 
 interface Invoice { id: string; invoiceNumber: string; project: string | null; amount: number; paid: number; status: string; dueDate: string | null; customer: { id: string; name: string }; }
 interface Customer { id: string; name: string; }
@@ -84,7 +84,7 @@ export default function InvoicesPage() {
         </div>
       )}
 
-      <Modal open={showAdd} onClose={() => setShowAdd(false)} title="New Invoice">
+      <SlideDrawer open={showAdd} onClose={() => setShowAdd(false)} title="New Invoice">
         <form onSubmit={handleAdd} className="space-y-4">
           <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Customer *</label><select required value={form.customerId} onChange={(e) => setForm({ ...form, customerId: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"><option value="">Select...</option>{customers.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></div>
           <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Project</label><input value={form.project} onChange={(e) => setForm({ ...form, project: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" placeholder="Patio Installation" /></div>
@@ -98,7 +98,7 @@ export default function InvoicesPage() {
             <button type="submit" disabled={saving} className="flex-1 py-2.5 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 disabled:opacity-50 flex items-center justify-center gap-2">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}{saving ? "Creating..." : "Create Invoice"}</button>
           </div>
         </form>
-      </Modal>
+      </SlideDrawer>
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Plus, Phone, Mail, Star, Clock, Shield, Sparkles, Loader2, Trash2 } from "lucide-react";
-import Modal from "@/components/Modal";
+import SlideDrawer from "@/components/SlideDrawer";
 
 interface Employee {
   id: string;
@@ -122,7 +122,7 @@ export default function EmployeesPage() {
         </div>
       )}
 
-      <Modal open={showAdd} onClose={() => setShowAdd(false)} title="Add Employee">
+      <SlideDrawer open={showAdd} onClose={() => setShowAdd(false)} title="Add Employee">
         <form onSubmit={handleAdd} className="space-y-4">
           <div>
             <label className="text-sm font-medium text-charcoal-700 mb-1 block">Name *</label>
@@ -170,7 +170,7 @@ export default function EmployeesPage() {
             </button>
           </div>
         </form>
-      </Modal>
+      </SlideDrawer>
     </div>
   );
 }

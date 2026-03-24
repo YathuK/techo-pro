@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Package, AlertTriangle, Plus, Search, Sparkles, Loader2, Trash2, BarChart3 } from "lucide-react";
-import Modal from "@/components/Modal";
+import SlideDrawer from "@/components/SlideDrawer";
 
 interface InventoryItem { id: string; name: string; category: string; unit: string; inStock: number; reorderPoint: number; price: number; location: string | null; }
 
@@ -72,7 +72,7 @@ export default function InventoryPage() {
         </div>
       )}
 
-      <Modal open={showAdd} onClose={() => setShowAdd(false)} title="Add Inventory Item">
+      <SlideDrawer open={showAdd} onClose={() => setShowAdd(false)} title="Add Inventory Item">
         <form onSubmit={handleAdd} className="space-y-4">
           <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Item Name *</label><input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" placeholder="Techo-Bloc Blu 60 Smooth" /></div>
           <div className="grid grid-cols-2 gap-3">
@@ -90,7 +90,7 @@ export default function InventoryPage() {
             <button type="submit" disabled={saving} className="flex-1 py-2.5 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 disabled:opacity-50 flex items-center justify-center gap-2">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}{saving ? "Adding..." : "Add Item"}</button>
           </div>
         </form>
-      </Modal>
+      </SlideDrawer>
     </div>
   );
 }
