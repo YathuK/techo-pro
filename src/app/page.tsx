@@ -1,101 +1,134 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import {
+  DollarSign,
+  Users,
+  Briefcase,
+  FileText,
+  TrendingUp,
+  Clock,
+  CheckCircle2,
+  AlertCircle,
+  Sparkles,
+  ArrowRight,
+} from "lucide-react";
+import StatCard from "@/components/StatCard";
+
+const recentJobs = [
+  { id: "JOB-1024", client: "Thompson Residence", type: "Patio Installation", status: "In Progress", value: "$12,500", crew: "Team Alpha" },
+  { id: "JOB-1023", client: "Riverside Mall", type: "Retaining Wall", status: "Scheduled", value: "$28,900", crew: "Team Bravo" },
+  { id: "JOB-1022", client: "Garcia Home", type: "Driveway Pavers", status: "Completed", value: "$8,750", crew: "Team Alpha" },
+  { id: "JOB-1021", client: "Oakwood HOA", type: "Walkway & Steps", status: "In Progress", value: "$15,200", crew: "Team Charlie" },
+  { id: "JOB-1020", client: "Chen Property", type: "Fire Pit Area", status: "Quote Sent", value: "$6,400", crew: "Unassigned" },
+];
+
+const aiInsights = [
+  { text: "3 quotes pending over 5 days — follow up to close $47K in pipeline", type: "revenue" },
+  { text: "Techo-Bloc Blu 60 Smooth stock running low — reorder 12 pallets", type: "inventory" },
+  { text: "Team Bravo has 2 unscheduled days next week — assign Riverside Mall Phase 2", type: "scheduling" },
+  { text: "Invoice #INV-892 is 15 days overdue ($8,200) — send payment reminder", type: "collections" },
+];
+
+const statusColors: Record<string, string> = {
+  "In Progress": "bg-info/10 text-info",
+  "Scheduled": "bg-warning/10 text-warning",
+  "Completed": "bg-success/10 text-success",
+  "Quote Sent": "bg-accent/10 text-accent-dark",
+};
+
+export default function Dashboard() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-charcoal-900">Dashboard</h1>
+          <p className="text-sm text-stone-500 mt-0.5">
+            Welcome back, Mike. Here&apos;s your business at a glance.
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="flex gap-3">
+          <button className="px-4 py-2 bg-white border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50 transition-colors">
+            This Month
+          </button>
+          <button className="px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 transition-colors flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-accent" />
+            AI Report
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard title="Monthly Revenue" value="$124,500" change="+12.5%" trend="up" icon={DollarSign} iconColor="bg-success/10 text-success" />
+        <StatCard title="Active Customers" value="48" change="+8.2%" trend="up" icon={Users} iconColor="bg-info/10 text-info" />
+        <StatCard title="Active Jobs" value="12" change="+3" trend="up" icon={Briefcase} iconColor="bg-accent/10 text-accent" />
+        <StatCard title="Pending Quotes" value="7" change="-2" trend="down" icon={FileText} iconColor="bg-warning/10 text-warning" />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 bg-white rounded-xl border border-stone-200">
+          <div className="flex items-center justify-between p-5 border-b border-stone-100">
+            <h2 className="text-lg font-semibold text-charcoal-900">Recent Jobs</h2>
+            <a href="/jobs" className="text-sm text-accent hover:text-accent-dark font-medium flex items-center gap-1">
+              View All <ArrowRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
+          <div className="divide-y divide-stone-100">
+            {recentJobs.map((job) => (
+              <div key={job.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-stone-50 transition-colors">
+                <div>
+                  <p className="text-sm font-medium text-charcoal-900">{job.client}</p>
+                  <p className="text-xs text-stone-500">{job.id} · {job.type}</p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="text-sm font-semibold text-charcoal-900">{job.value}</span>
+                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusColors[job.status]}`}>
+                    {job.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-charcoal-950 to-charcoal-900 rounded-xl p-5 text-cream-200">
+          <div className="flex items-center gap-2 mb-4">
+            <Sparkles className="w-5 h-5 text-accent" />
+            <h2 className="text-lg font-semibold text-cream-100">AI Insights</h2>
+          </div>
+          <div className="space-y-3">
+            {aiInsights.map((insight, i) => (
+              <div key={i} className="flex gap-3 p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
+                {insight.type === "revenue" && <TrendingUp className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />}
+                {insight.type === "inventory" && <AlertCircle className="w-4 h-4 text-warning flex-shrink-0 mt-0.5" />}
+                {insight.type === "scheduling" && <Clock className="w-4 h-4 text-info flex-shrink-0 mt-0.5" />}
+                {insight.type === "collections" && <CheckCircle2 className="w-4 h-4 text-danger flex-shrink-0 mt-0.5" />}
+                <p className="text-xs leading-relaxed text-charcoal-300">{insight.text}</p>
+              </div>
+            ))}
+          </div>
+          <button className="w-full mt-4 py-2.5 bg-accent/20 border border-accent/30 rounded-lg text-sm font-medium text-accent hover:bg-accent/30 transition-colors">
+            Get Full AI Analysis
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {[
+          { label: "New Quote", icon: FileText, href: "/quotes", color: "text-accent" },
+          { label: "Add Customer", icon: Users, href: "/customers", color: "text-info" },
+          { label: "Create Job", icon: Briefcase, href: "/jobs", color: "text-success" },
+          { label: "Send Invoice", icon: DollarSign, href: "/invoices", color: "text-warning" },
+        ].map((action) => (
+          <a
+            key={action.label}
+            href={action.href}
+            className="flex items-center gap-3 p-4 bg-white rounded-xl border border-stone-200 hover:shadow-md hover:border-stone-300 transition-all group"
+          >
+            <action.icon className={`w-5 h-5 ${action.color}`} />
+            <span className="text-sm font-medium text-charcoal-700 group-hover:text-charcoal-900">{action.label}</span>
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
