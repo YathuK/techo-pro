@@ -11,15 +11,15 @@ export default function InventoryPage() {
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState({ name: "", category: "Pavers", unit: "sq ft", inStock: 0, reorderPoint: 0, price: 0, location: "" });
+  const [form, setForm] = useState({ name: "", category: "Pavers", unit: "sq ft", inStock: "", reorderPoint: "", price: "", location: "" });
 
   const fetchItems = useCallback(async () => { const res = await fetch("/api/inventory"); if (res.ok) setItems(await res.json()); setLoading(false); }, []);
   useEffect(() => { fetchItems(); }, [fetchItems]);
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault(); setSaving(true);
-    const res = await fetch("/api/inventory", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
-    if (res.ok) { setShowAdd(false); setForm({ name: "", category: "Pavers", unit: "sq ft", inStock: 0, reorderPoint: 0, price: 0, location: "" }); fetchItems(); }
+    const res = await fetch("/api/inventory", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, inStock: Number(form.inStock) || 0, reorderPoint: Number(form.reorderPoint) || 0, price: Number(form.price) || 0 }) });
+    if (res.ok) { setShowAdd(false); setForm({ name: "", category: "Pavers", unit: "sq ft", inStock: "", reorderPoint: "", price: "", location: "" }); fetchItems(); }
     setSaving(false);
   };
 
@@ -78,9 +78,9 @@ export default function InventoryPage() {
             <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Unit</label><select value={form.unit} onChange={(e) => setForm({ ...form, unit: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"><option>sq ft</option><option>lin ft</option><option>bags</option><option>tons</option><option>pcs</option></select></div>
           </div>
           <div className="grid grid-cols-3 gap-3">
-            <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">In Stock</label><input type="number" value={form.inStock} onChange={(e) => setForm({ ...form, inStock: +e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
-            <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Reorder At</label><input type="number" value={form.reorderPoint} onChange={(e) => setForm({ ...form, reorderPoint: +e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
-            <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Price $</label><input type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: +e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
+            <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">In Stock</label><input type="number" value={form.inStock} onChange={(e) => setForm({ ...form, inStock: e.target.value })} placeholder="0" className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
+            <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Reorder At</label><input type="number" value={form.reorderPoint} onChange={(e) => setForm({ ...form, reorderPoint: e.target.value })} placeholder="0" className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
+            <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Price $</label><input type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} placeholder="0.00" className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
           </div>
           <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Location</label><input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" placeholder="Yard A" /></div>
           <div className="flex gap-3 pt-2">

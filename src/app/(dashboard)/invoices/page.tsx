@@ -21,7 +21,7 @@ export default function InvoicesPage() {
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState({ customerId: "", project: "", amount: 0, status: "Draft", dueDate: "" });
+  const [form, setForm] = useState({ customerId: "", project: "", amount: "", status: "Draft", dueDate: "" });
 
   const fetchData = useCallback(async () => {
     const [i, c] = await Promise.all([fetch("/api/invoices"), fetch("/api/customers")]);
@@ -33,8 +33,8 @@ export default function InvoicesPage() {
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault(); setSaving(true);
-    const res = await fetch("/api/invoices", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, dueDate: form.dueDate || undefined }) });
-    if (res.ok) { setShowAdd(false); setForm({ customerId: "", project: "", amount: 0, status: "Draft", dueDate: "" }); fetchData(); }
+    const res = await fetch("/api/invoices", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, amount: Number(form.amount) || 0, dueDate: form.dueDate || undefined }) });
+    if (res.ok) { setShowAdd(false); setForm({ customerId: "", project: "", amount: "", status: "Draft", dueDate: "" }); fetchData(); }
     setSaving(false);
   };
 
@@ -89,7 +89,7 @@ export default function InvoicesPage() {
           <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Customer *</label><select required value={form.customerId} onChange={(e) => setForm({ ...form, customerId: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"><option value="">Select...</option>{customers.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></div>
           <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Project</label><input value={form.project} onChange={(e) => setForm({ ...form, project: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" placeholder="Patio Installation" /></div>
           <div className="grid grid-cols-2 gap-3">
-            <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Amount *</label><input required type="number" step="0.01" value={form.amount} onChange={(e) => setForm({ ...form, amount: +e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
+            <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Amount *</label><input required type="number" step="0.01" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} placeholder="0.00" className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
             <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Due Date</label><input type="date" value={form.dueDate} onChange={(e) => setForm({ ...form, dueDate: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
           </div>
           <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Status</label><select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"><option>Draft</option><option>Sent</option><option>Partial</option><option>Paid</option><option>Overdue</option></select></div>
