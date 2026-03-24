@@ -14,7 +14,7 @@ import {
   Sparkles,
   ChevronLeft,
   ChevronRight,
-  HardHat,
+  Layers,
   Menu,
   X,
 } from "lucide-react";
@@ -60,7 +60,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 py-6 border-b border-charcoal-800">
         <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
-          <HardHat className="w-6 h-6 text-charcoal-950" />
+          <Layers className="w-6 h-6 text-charcoal-950" />
         </div>
         {(!collapsed || mobileOpen) && (
           <div className="flex-1">
@@ -68,7 +68,7 @@ export default function Sidebar() {
               Techo<span className="text-accent">-Pro</span>
             </h1>
             <p className="text-[10px] text-charcoal-400 uppercase tracking-widest">
-              Hardscaping Suite
+              Hardscape Platform
             </p>
           </div>
         )}

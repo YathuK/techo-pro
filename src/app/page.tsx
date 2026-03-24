@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
-  HardHat,
+  Layers,
   ArrowRight,
   FileText,
   MessageSquare,
@@ -129,7 +129,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 group">
             <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <HardHat className="w-5 h-5 text-charcoal-950" />
+              <Layers className="w-5 h-5 text-charcoal-950" />
             </div>
             <span className="text-base font-bold text-cream-100 tracking-tight">
               Techo<span className="text-accent">-Pro</span>
@@ -490,7 +490,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 bg-accent rounded-md flex items-center justify-center">
-                <HardHat className="w-4 h-4 text-charcoal-950" />
+                <Layers className="w-4 h-4 text-charcoal-950" />
               </div>
               <span className="text-sm font-bold text-cream-100">
                 Techo<span className="text-accent">-Pro</span>

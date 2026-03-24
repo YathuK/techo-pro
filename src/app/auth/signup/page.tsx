@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { HardHat, Loader2, Eye, EyeOff } from "lucide-react";
+import { Layers, Loader2, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 
 export default function SignUpPage() {
@@ -79,7 +79,7 @@ export default function SignUpPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-14 h-14 bg-accent rounded-xl flex items-center justify-center mx-auto mb-4">
-            <HardHat className="w-8 h-8 text-charcoal-950" />
+            <Layers className="w-8 h-8 text-charcoal-950" />
           </div>
           <h1 className="text-2xl font-bold text-cream-100 tracking-tight">
             Techo<span className="text-accent">-Pro</span>
