@@ -1,26 +1,11 @@
 "use client";
 
-import {
-  Plus,
-  Send,
-  Download,
-  CheckCircle2,
-  Clock,
-  AlertCircle,
-  DollarSign,
-  Sparkles,
-  Eye,
-  MoreHorizontal,
-} from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Plus, Send, Download, CheckCircle2, Clock, AlertCircle, DollarSign, Sparkles, Loader2, Trash2 } from "lucide-react";
+import Modal from "@/components/Modal";
 
-const invoices = [
-  { id: "INV-896", client: "Thompson Residence", project: "Patio Installation", amount: "$12,500", paid: "$3,750", balance: "$8,750", status: "Partial", dueDate: "Apr 5, 2026", sentDate: "Mar 20, 2026" },
-  { id: "INV-895", client: "Garcia Home", project: "Driveway Pavers", amount: "$8,750", paid: "$8,750", balance: "$0", status: "Paid", dueDate: "Mar 16, 2026", sentDate: "Mar 10, 2026" },
-  { id: "INV-894", client: "Oakwood HOA", project: "Walkway & Steps — Deposit", amount: "$4,560", paid: "$4,560", balance: "$0", status: "Paid", dueDate: "Mar 22, 2026", sentDate: "Mar 18, 2026" },
-  { id: "INV-893", client: "Riverside Mall", project: "Retaining Wall — Phase 1", amount: "$28,900", paid: "$28,900", balance: "$0", status: "Paid", dueDate: "Mar 12, 2026", sentDate: "Mar 1, 2026" },
-  { id: "INV-892", client: "Patel Residence", project: "Garden Path Repair", amount: "$8,200", paid: "$0", balance: "$8,200", status: "Overdue", dueDate: "Mar 9, 2026", sentDate: "Feb 25, 2026" },
-  { id: "INV-891", client: "Williams Estate", project: "Pool Deck — Deposit", amount: "$6,690", paid: "$0", balance: "$6,690", status: "Sent", dueDate: "Mar 30, 2026", sentDate: "Mar 22, 2026" },
-];
+interface Invoice { id: string; invoiceNumber: string; project: string | null; amount: number; paid: number; status: string; dueDate: string | null; customer: { id: string; name: string }; }
+interface Customer { id: string; name: string; }
 
 const statusConfig: Record<string, { color: string; icon: React.ReactNode }> = {
   Paid: { color: "bg-success/10 text-success", icon: <CheckCircle2 className="w-3.5 h-3.5" /> },
@@ -31,129 +16,89 @@ const statusConfig: Record<string, { color: string; icon: React.ReactNode }> = {
 };
 
 export default function InvoicesPage() {
-  const totalOutstanding = invoices
-    .filter((i) => i.status !== "Paid")
-    .reduce((sum, i) => sum + parseFloat(i.balance.replace(/[$,]/g, "")), 0);
-  const totalOverdue = invoices
-    .filter((i) => i.status === "Overdue")
-    .reduce((sum, i) => sum + parseFloat(i.balance.replace(/[$,]/g, "")), 0);
-  const totalCollected = invoices.reduce(
-    (sum, i) => sum + parseFloat(i.paid.replace(/[$,]/g, "")),
-    0
-  );
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showAdd, setShowAdd] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({ customerId: "", project: "", amount: 0, status: "Draft", dueDate: "" });
+
+  const fetchData = useCallback(async () => {
+    const [i, c] = await Promise.all([fetch("/api/invoices"), fetch("/api/customers")]);
+    if (i.ok) setInvoices(await i.json());
+    if (c.ok) setCustomers(await c.json());
+    setLoading(false);
+  }, []);
+  useEffect(() => { fetchData(); }, [fetchData]);
+
+  const handleAdd = async (e: React.FormEvent) => {
+    e.preventDefault(); setSaving(true);
+    const res = await fetch("/api/invoices", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, dueDate: form.dueDate || undefined }) });
+    if (res.ok) { setShowAdd(false); setForm({ customerId: "", project: "", amount: 0, status: "Draft", dueDate: "" }); fetchData(); }
+    setSaving(false);
+  };
+
+  const handleDelete = async (id: string) => { if (!confirm("Delete?")) return; await fetch(`/api/invoices/${id}`, { method: "DELETE" }); fetchData(); };
+
+  const totalOutstanding = invoices.filter((i) => i.status !== "Paid").reduce((s, i) => s + (i.amount - i.paid), 0);
+  const totalOverdue = invoices.filter((i) => i.status === "Overdue").reduce((s, i) => s + (i.amount - i.paid), 0);
+  const totalCollected = invoices.reduce((s, i) => s + i.paid, 0);
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-charcoal-900">Invoices</h1>
-          <p className="text-sm text-stone-500 mt-0.5">Create, track, and manage your invoices</p>
-        </div>
+        <div><h1 className="text-xl sm:text-2xl font-bold text-charcoal-900">Invoices</h1><p className="text-sm text-stone-500 mt-0.5">{invoices.length} invoices</p></div>
         <div className="flex gap-3">
-          <button className="px-3 sm:px-4 py-2 bg-white border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50 flex items-center gap-2">
-            <Download className="w-4 h-4" /> <span className="hidden sm:inline">Export All</span>
-          </button>
-          <button className="px-3 sm:px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 flex items-center gap-2">
-            <Plus className="w-4 h-4" /> New Invoice
-          </button>
+          <button className="px-3 sm:px-4 py-2 bg-white border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50 flex items-center gap-2"><Download className="w-4 h-4" /><span className="hidden sm:inline">Export</span></button>
+          <button onClick={() => setShowAdd(true)} className="px-3 sm:px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 flex items-center gap-2"><Plus className="w-4 h-4" /> New Invoice</button>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-        <div className="bg-white rounded-xl border border-stone-200 p-4 flex items-center gap-4">
-          <div className="p-2.5 bg-success/10 rounded-lg">
-            <DollarSign className="w-5 h-5 text-success" />
-          </div>
-          <div>
-            <p className="text-xs text-stone-500">Collected This Month</p>
-            <p className="text-xl font-bold text-charcoal-900">${totalCollected.toLocaleString()}</p>
-          </div>
-        </div>
-        <div className="bg-white rounded-xl border border-stone-200 p-4 flex items-center gap-4">
-          <div className="p-2.5 bg-warning/10 rounded-lg">
-            <Clock className="w-5 h-5 text-warning" />
-          </div>
-          <div>
-            <p className="text-xs text-stone-500">Outstanding</p>
-            <p className="text-xl font-bold text-warning">${totalOutstanding.toLocaleString()}</p>
-          </div>
-        </div>
-        <div className="bg-white rounded-xl border border-stone-200 p-4 flex items-center gap-4">
-          <div className="p-2.5 bg-danger/10 rounded-lg">
-            <AlertCircle className="w-5 h-5 text-danger" />
-          </div>
-          <div>
-            <p className="text-xs text-stone-500">Overdue</p>
-            <p className="text-xl font-bold text-danger">${totalOverdue.toLocaleString()}</p>
-          </div>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="bg-white rounded-xl border border-stone-200 p-4 flex items-center gap-4"><div className="p-2.5 bg-success/10 rounded-lg"><DollarSign className="w-5 h-5 text-success" /></div><div><p className="text-xs text-stone-500">Collected</p><p className="text-xl font-bold text-charcoal-900">${totalCollected.toLocaleString()}</p></div></div>
+        <div className="bg-white rounded-xl border border-stone-200 p-4 flex items-center gap-4"><div className="p-2.5 bg-warning/10 rounded-lg"><Clock className="w-5 h-5 text-warning" /></div><div><p className="text-xs text-stone-500">Outstanding</p><p className="text-xl font-bold text-warning">${totalOutstanding.toLocaleString()}</p></div></div>
+        <div className="bg-white rounded-xl border border-stone-200 p-4 flex items-center gap-4"><div className="p-2.5 bg-danger/10 rounded-lg"><AlertCircle className="w-5 h-5 text-danger" /></div><div><p className="text-xs text-stone-500">Overdue</p><p className="text-xl font-bold text-danger">${totalOverdue.toLocaleString()}</p></div></div>
       </div>
 
-      {/* AI Collection Insight */}
-      <div className="bg-gradient-to-r from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-start sm:items-center gap-3">
-          <Sparkles className="w-5 h-5 text-accent flex-shrink-0 mt-0.5 sm:mt-0" />
-          <div>
-            <p className="text-sm font-medium text-charcoal-900">AI Collection: INV-892 is 15 days overdue ($8,200)</p>
-            <p className="text-xs text-stone-500">Patel Residence hasn&apos;t responded to the first reminder. Want me to draft a follow-up?</p>
-          </div>
+      {loading ? (<div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-accent" /></div>
+      ) : invoices.length === 0 ? (<div className="text-center py-20"><Sparkles className="w-10 h-10 text-stone-300 mx-auto mb-3" /><p className="text-sm font-medium text-stone-500">No invoices yet</p></div>
+      ) : (
+        <div className="bg-white rounded-xl border border-stone-200 overflow-x-auto">
+          <table className="w-full min-w-[750px]">
+            <thead><tr className="border-b border-stone-100 bg-stone-50">
+              {["Invoice","Client","Amount","Balance","Status","Due",""].map((h) => <th key={h} className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">{h}</th>)}
+            </tr></thead>
+            <tbody className="divide-y divide-stone-100">{invoices.map((inv) => {
+              const sc = statusConfig[inv.status] || statusConfig.Draft;
+              return (<tr key={inv.id} className={`hover:bg-stone-50 ${inv.status === "Overdue" ? "bg-danger/5" : ""}`}>
+                <td className="px-5 py-3.5 text-sm font-semibold text-charcoal-900">{inv.invoiceNumber}</td>
+                <td className="px-5 py-3.5 text-sm text-charcoal-700">{inv.customer?.name}</td>
+                <td className="px-5 py-3.5 text-sm font-semibold text-charcoal-900">${inv.amount.toLocaleString()}</td>
+                <td className="px-5 py-3.5 text-sm font-semibold text-charcoal-900">${(inv.amount - inv.paid).toLocaleString()}</td>
+                <td className="px-5 py-3.5"><span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${sc.color}`}>{sc.icon} {inv.status}</span></td>
+                <td className="px-5 py-3.5 text-sm text-stone-500">{inv.dueDate ? new Date(inv.dueDate).toLocaleDateString() : "—"}</td>
+                <td className="px-3 py-3.5"><button onClick={() => handleDelete(inv.id)} className="p-1.5 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4 text-stone-400 hover:text-danger" /></button></td>
+              </tr>);
+            })}</tbody>
+          </table>
         </div>
-        <button className="px-3 py-1.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors whitespace-nowrap w-full sm:w-auto">
-          Draft Reminder
-        </button>
-      </div>
+      )}
 
-      {/* Table */}
-      <div className="bg-white rounded-xl border border-stone-200 overflow-x-auto">
-        <table className="w-full min-w-[800px]">
-          <thead>
-            <tr className="border-b border-stone-100 bg-stone-50">
-              <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Invoice</th>
-              <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Client</th>
-              <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Project</th>
-              <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Amount</th>
-              <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Balance</th>
-              <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Status</th>
-              <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Due Date</th>
-              <th className="w-20"></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-stone-100">
-            {invoices.map((inv) => (
-              <tr key={inv.id} className={`hover:bg-stone-50 transition-colors ${inv.status === "Overdue" ? "bg-danger/5" : ""}`}>
-                <td className="px-5 py-3.5">
-                  <span className="text-sm font-semibold text-charcoal-900">{inv.id}</span>
-                </td>
-                <td className="px-5 py-3.5 text-sm text-charcoal-700">{inv.client}</td>
-                <td className="px-5 py-3.5 text-sm text-stone-600">{inv.project}</td>
-                <td className="px-5 py-3.5 text-sm font-semibold text-charcoal-900">{inv.amount}</td>
-                <td className="px-5 py-3.5">
-                  <span className={`text-sm font-semibold ${inv.status === "Overdue" ? "text-danger" : inv.status === "Paid" ? "text-success" : "text-charcoal-900"}`}>
-                    {inv.balance}
-                  </span>
-                </td>
-                <td className="px-5 py-3.5">
-                  <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${statusConfig[inv.status].color}`}>
-                    {statusConfig[inv.status].icon} {inv.status}
-                  </span>
-                </td>
-                <td className="px-5 py-3.5 text-sm text-stone-500">{inv.dueDate}</td>
-                <td className="px-3 py-3.5">
-                  <div className="flex items-center gap-1">
-                    <button className="p-1.5 hover:bg-stone-100 rounded-lg transition-colors" title="View">
-                      <Eye className="w-4 h-4 text-stone-400" />
-                    </button>
-                    <button className="p-1.5 hover:bg-stone-100 rounded-lg transition-colors" title="More">
-                      <MoreHorizontal className="w-4 h-4 text-stone-400" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Modal open={showAdd} onClose={() => setShowAdd(false)} title="New Invoice">
+        <form onSubmit={handleAdd} className="space-y-4">
+          <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Customer *</label><select required value={form.customerId} onChange={(e) => setForm({ ...form, customerId: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"><option value="">Select...</option>{customers.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></div>
+          <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Project</label><input value={form.project} onChange={(e) => setForm({ ...form, project: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" placeholder="Patio Installation" /></div>
+          <div className="grid grid-cols-2 gap-3">
+            <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Amount *</label><input required type="number" step="0.01" value={form.amount} onChange={(e) => setForm({ ...form, amount: +e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
+            <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Due Date</label><input type="date" value={form.dueDate} onChange={(e) => setForm({ ...form, dueDate: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
+          </div>
+          <div><label className="text-sm font-medium text-charcoal-700 mb-1 block">Status</label><select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"><option>Draft</option><option>Sent</option><option>Partial</option><option>Paid</option><option>Overdue</option></select></div>
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={() => setShowAdd(false)} className="flex-1 py-2.5 border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50">Cancel</button>
+            <button type="submit" disabled={saving} className="flex-1 py-2.5 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 disabled:opacity-50 flex items-center justify-center gap-2">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}{saving ? "Creating..." : "Create Invoice"}</button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 }
