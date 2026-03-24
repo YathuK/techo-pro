@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import SessionProvider from "@/components/SessionProvider";
 
 export const metadata: Metadata = {
   title: "Techo-Pro | AI-Powered Business Management for Hardscaping Contractors",
@@ -16,15 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased bg-stone-50">
-        <div className="flex h-screen overflow-hidden">
-          <Sidebar />
-          <div className="flex flex-col flex-1 overflow-hidden">
-            <Header />
-            <main className="flex-1 overflow-y-auto p-4 lg:p-6">
-              {children}
-            </main>
-          </div>
-        </div>
+        <SessionProvider>
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );

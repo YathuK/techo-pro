@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  password       String
+  name           String
+  companyName    String?
+  phone          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  customers      Customer[]
+  employees      Employee[]
+  jobs           Job[]
+  quotes         Quote[]
+  invoices       Invoice[]
+  inventoryItems InventoryItem[]
+  messages       Message[]
+}
+
+model Customer {
+  id          String    @id @default(cuid())
+  name        String
+  email       String?
+  phone       String?
+  address     String?
+  status      String    @default("Lead")
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  jobs        Job[]
+  quotes      Quote[]
+  invoices    Invoice[]
+  messages    Message[]
+}
+
+model Employee {
+  id              String    @id @default(cuid())
+  name            String
+  email           String?
+  phone           String?
+  role            String
+  team            String?
+  status          String    @default("Available")
+  rating          Float     @default(0)
+  hoursPerWeek    Float     @default(0)
+  certifications  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  jobs            Job[]     @relation("JobCrew")
+}
+
+model Job {
+  id          String    @id @default(cuid())
+  jobNumber   String
+  type        String
+  address     String?
+  status      String    @default("Quote Sent")
+  value       Float     @default(0)
+  startDate   DateTime?
+  endDate     DateTime?
+  progress    Int       @default(0)
+  materials   String?
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  customerId  String
+  customer    Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  crew        Employee[] @relation("JobCrew")
+  invoices    Invoice[]
+}
+
+model Quote {
+  id          String    @id @default(cuid())
+  quoteNumber String
+  project     String
+  value       Float     @default(0)
+  status      String    @default("Draft")
+  content     String?
+  aiGenerated Boolean   @default(false)
+  validUntil  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  customerId  String
+  customer    Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+}
+
+model Invoice {
+  id            String    @id @default(cuid())
+  invoiceNumber String
+  project       String?
+  amount        Float     @default(0)
+  paid          Float     @default(0)
+  status        String    @default("Draft")
+  dueDate       DateTime?
+  sentDate      DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  customerId    String
+  customer      Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  jobId         String?
+  job           Job?      @relation(fields: [jobId], references: [id], onDelete: SetNull)
+}
+
+model InventoryItem {
+  id            String    @id @default(cuid())
+  name          String
+  category      String
+  unit          String
+  inStock       Float     @default(0)
+  reorderPoint  Float     @default(0)
+  price         Float     @default(0)
+  location      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id          String    @id @default(cuid())
+  type        String
+  template    String?
+  subject     String?
+  content     String
+  status      String    @default("draft")
+  createdAt   DateTime  @default(now())
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  customerId  String
+  customer    Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+}
