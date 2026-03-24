@@ -12,6 +12,7 @@ import {
   MessageSquare,
   FileText,
   Loader2,
+  Pencil,
   Copy,
   Check,
   RefreshCw,
@@ -68,6 +69,7 @@ export default function CustomersPage() {
   const [loading, setLoading] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", address: "", status: "Lead", notes: "" });
 
   // Quote drawer state
@@ -100,13 +102,39 @@ export default function CustomersPage() {
 
   const filtered = customers;
 
+  const openAddDrawer = () => {
+    setEditingId(null);
+    setFormData({ name: "", email: "", phone: "", address: "", status: "Lead", notes: "" });
+    setDrawerOpen(true);
+  };
+
+  const openEditDrawer = (customer: Customer) => {
+    setEditingId(customer.id);
+    setFormData({
+      name: customer.name,
+      email: customer.email || "",
+      phone: customer.phone || "",
+      address: customer.address || "",
+      status: customer.status,
+      notes: customer.notes || "",
+    });
+    setDrawerOpen(true);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim()) return;
     setSaving(true);
     try {
-      const res = await fetch("/api/customers", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(formData) });
-      if (res.ok) { setDrawerOpen(false); setFormData({ name: "", email: "", phone: "", address: "", status: "Lead", notes: "" }); fetchCustomers(); }
+      const url = editingId ? `/api/customers/${editingId}` : "/api/customers";
+      const method = editingId ? "PUT" : "POST";
+      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(formData) });
+      if (res.ok) {
+        setDrawerOpen(false);
+        setEditingId(null);
+        setFormData({ name: "", email: "", phone: "", address: "", status: "Lead", notes: "" });
+        fetchCustomers();
+      }
     } catch (err) { console.error(err); }
     finally { setSaving(false); }
   };
@@ -212,7 +240,7 @@ export default function CustomersPage() {
           <button className="px-3 sm:px-4 py-2 bg-white border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50 flex items-center gap-2">
             <Download className="w-4 h-4" /> <span className="hidden sm:inline">Export</span>
           </button>
-          <button onClick={() => setDrawerOpen(true)} className="px-3 sm:px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 flex items-center gap-2">
+          <button onClick={openAddDrawer} className="px-3 sm:px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 flex items-center gap-2">
             <Plus className="w-4 h-4" /> Add Customer
           </button>
         </div>
@@ -262,6 +290,9 @@ export default function CustomersPage() {
                   <td className="px-5 py-3.5 text-sm text-stone-500">{timeAgo(customer.updatedAt)}</td>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center justify-end gap-1">
+                      <button onClick={() => openEditDrawer(customer)} className="p-1.5 hover:bg-stone-100 rounded-lg transition-colors" title="Edit Customer">
+                        <Pencil className="w-4 h-4 text-stone-500" />
+                      </button>
                       <button onClick={() => openMessageDrawer(customer)} className="p-1.5 hover:bg-blue-50 rounded-lg transition-colors" title="Send Message">
                         <MessageSquare className="w-4 h-4 text-blue-500" />
                       </button>
@@ -281,7 +312,7 @@ export default function CustomersPage() {
       </div>
 
       {/* Add Customer Drawer */}
-      <SlideDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title="Add Customer">
+      <SlideDrawer open={drawerOpen} onClose={() => { setDrawerOpen(false); setEditingId(null); }} title={editingId ? "Edit Customer" : "Add Customer"}>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div><label className="block text-sm font-medium text-charcoal-700 mb-1">Name *</label><input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Customer or company name" className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
           <div><label className="block text-sm font-medium text-charcoal-700 mb-1">Email</label><input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="email@example.com" className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30" /></div>
@@ -290,9 +321,9 @@ export default function CustomersPage() {
           <div><label className="block text-sm font-medium text-charcoal-700 mb-1">Status</label><select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30 bg-white"><option value="Lead">Lead</option><option value="Active">Active</option><option value="Inactive">Inactive</option></select></div>
           <div><label className="block text-sm font-medium text-charcoal-700 mb-1">Notes</label><textarea value={formData.notes} onChange={(e) => setFormData({ ...formData, notes: e.target.value })} placeholder="Any notes..." rows={3} className="w-full px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30 resize-none" /></div>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={() => setDrawerOpen(false)} className="flex-1 px-4 py-2 border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50">Cancel</button>
+            <button type="button" onClick={() => { setDrawerOpen(false); setEditingId(null); }} className="flex-1 px-4 py-2 border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50">Cancel</button>
             <button type="submit" disabled={saving || !formData.name.trim()} className="flex-1 px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 disabled:opacity-50 flex items-center justify-center gap-2">
-              {saving && <Loader2 className="w-4 h-4 animate-spin" />}{saving ? "Saving..." : "Add Customer"}
+              {saving && <Loader2 className="w-4 h-4 animate-spin" />}{saving ? "Saving..." : editingId ? "Save Changes" : "Add Customer"}
             </button>
           </div>
         </form>
