@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#1a1a1a"/>
+  <!-- Dot grid background -->
+  <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.04)"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <!-- Glow -->
+  <ellipse cx="600" cy="315" rx="400" ry="250" fill="#D4A574" opacity="0.06"/>
+  <!-- Icon -->
+  <rect x="510" y="160" width="80" height="80" rx="18" fill="#D4A574"/>
+  <g transform="translate(525, 175)" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <polygon points="25 3 48 15 25 27 2 15"/>
+    <polyline points="2 35 25 47 48 35"/>
+    <polyline points="2 25 25 37 48 25"/>
+  </g>
+  <!-- Text -->
+  <text x="600" y="310" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="56" fill="#fdf9f0">
+    Techo<tspan fill="#D4A574">-Pro</tspan>
+  </text>
+  <text x="600" y="360" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-weight="400" font-size="22" fill="#888888">
+    Smart Business Management for Hardscape Contractors
+  </text>
+</svg>
