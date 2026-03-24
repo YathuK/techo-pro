@@ -84,21 +84,22 @@ Valid for: 30 days`);
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">AI Quote Builder</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-charcoal-900">AI Quote Builder</h1>
           <p className="text-sm text-stone-500 mt-0.5">Create professional quotes in seconds with AI</p>
         </div>
         <div className="flex gap-3">
-          <button className="px-4 py-2 bg-white border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50 flex items-center gap-2">
-            <FileText className="w-4 h-4" /> Templates
+          <button className="px-3 sm:px-4 py-2 bg-white border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50 flex items-center gap-2">
+            <FileText className="w-4 h-4" /> <span className="hidden sm:inline">Templates</span>
           </button>
           <button
             onClick={() => setShowAiBuilder(!showAiBuilder)}
-            className="px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 flex items-center gap-2"
+            className="px-3 sm:px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 flex items-center gap-2"
           >
             <Sparkles className="w-4 h-4 text-accent" />
-            {showAiBuilder ? "View Quotes" : "AI Quote Builder"}
+            <span className="hidden sm:inline">{showAiBuilder ? "View Quotes" : "AI Quote Builder"}</span>
+            <span className="sm:hidden">{showAiBuilder ? "Quotes" : "AI Builder"}</span>
           </button>
         </div>
       </div>
@@ -197,8 +198,8 @@ Valid for: 30 days`);
         </div>
       ) : (
         /* Quotes List */
-        <div className="bg-white rounded-xl border border-stone-200 overflow-hidden">
-          <table className="w-full">
+        <div className="bg-white rounded-xl border border-stone-200 overflow-x-auto">
+          <table className="w-full min-w-[700px]">
             <thead>
               <tr className="border-b border-stone-100 bg-stone-50">
                 <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Quote</th>

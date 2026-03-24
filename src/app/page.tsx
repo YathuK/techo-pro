@@ -39,25 +39,25 @@ const statusColors: Record<string, string> = {
 export default function Dashboard() {
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">Dashboard</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-charcoal-900">Dashboard</h1>
           <p className="text-sm text-stone-500 mt-0.5">
             Welcome back, Mike. Here&apos;s your business at a glance.
           </p>
         </div>
         <div className="flex gap-3">
-          <button className="px-4 py-2 bg-white border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50 transition-colors">
+          <button className="px-3 sm:px-4 py-2 bg-white border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50 transition-colors">
             This Month
           </button>
-          <button className="px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 transition-colors flex items-center gap-2">
+          <button className="px-3 sm:px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 transition-colors flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-accent" />
             AI Report
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <StatCard title="Monthly Revenue" value="$124,500" change="+12.5%" trend="up" icon={DollarSign} iconColor="bg-success/10 text-success" />
         <StatCard title="Active Customers" value="48" change="+8.2%" trend="up" icon={Users} iconColor="bg-info/10 text-info" />
         <StatCard title="Active Jobs" value="12" change="+3" trend="up" icon={Briefcase} iconColor="bg-accent/10 text-accent" />
@@ -74,14 +74,14 @@ export default function Dashboard() {
           </div>
           <div className="divide-y divide-stone-100">
             {recentJobs.map((job) => (
-              <div key={job.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-stone-50 transition-colors">
-                <div>
-                  <p className="text-sm font-medium text-charcoal-900">{job.client}</p>
-                  <p className="text-xs text-stone-500">{job.id} · {job.type}</p>
+              <div key={job.id} className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-3.5 hover:bg-stone-50 transition-colors gap-3">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-charcoal-900 truncate">{job.client}</p>
+                  <p className="text-xs text-stone-500 truncate">{job.id} · {job.type}</p>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
                   <span className="text-sm font-semibold text-charcoal-900">{job.value}</span>
-                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusColors[job.status]}`}>
+                  <span className={`text-xs font-medium px-2 sm:px-2.5 py-1 rounded-full whitespace-nowrap ${statusColors[job.status]}`}>
                     {job.status}
                   </span>
                 </div>

@@ -37,23 +37,23 @@ export default function InventoryPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">Inventory</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-charcoal-900">Inventory</h1>
           <p className="text-sm text-stone-500 mt-0.5">Track materials, supplies, and stock levels</p>
         </div>
         <div className="flex gap-3">
-          <button className="px-4 py-2 bg-white border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50 flex items-center gap-2">
-            <BarChart3 className="w-4 h-4" /> Usage Report
+          <button className="px-3 sm:px-4 py-2 bg-white border border-stone-200 rounded-lg text-sm font-medium text-charcoal-700 hover:bg-stone-50 flex items-center gap-2">
+            <BarChart3 className="w-4 h-4" /> <span className="hidden sm:inline">Usage Report</span>
           </button>
-          <button className="px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 flex items-center gap-2">
+          <button className="px-3 sm:px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 flex items-center gap-2">
             <Plus className="w-4 h-4" /> Add Item
           </button>
         </div>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         <div className="bg-white rounded-xl border border-stone-200 p-4 flex items-center gap-4">
           <div className="p-2.5 bg-accent/10 rounded-lg">
             <Package className="w-5 h-5 text-accent" />
@@ -85,9 +85,9 @@ export default function InventoryPage() {
 
       {/* AI Alert */}
       {lowStock.length > 0 && (
-        <div className="bg-gradient-to-r from-danger/5 to-warning/5 border border-danger/20 rounded-xl p-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Sparkles className="w-5 h-5 text-accent" />
+        <div className="bg-gradient-to-r from-danger/5 to-warning/5 border border-danger/20 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-start sm:items-center gap-3">
+            <Sparkles className="w-5 h-5 text-accent flex-shrink-0 mt-0.5 sm:mt-0" />
             <div>
               <p className="text-sm font-medium text-charcoal-900">
                 AI Alert: {lowStock.length} item{lowStock.length > 1 ? "s" : ""} below reorder point
@@ -97,7 +97,7 @@ export default function InventoryPage() {
               </p>
             </div>
           </div>
-          <button className="px-3 py-1.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors whitespace-nowrap">
+          <button className="px-3 py-1.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors whitespace-nowrap w-full sm:w-auto">
             Auto-Reorder
           </button>
         </div>
@@ -116,8 +116,8 @@ export default function InventoryPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-stone-200 overflow-hidden">
-        <table className="w-full">
+      <div className="bg-white rounded-xl border border-stone-200 overflow-x-auto">
+        <table className="w-full min-w-[900px]">
           <thead>
             <tr className="border-b border-stone-100 bg-stone-50">
               <th className="text-left text-xs font-semibold text-stone-500 uppercase tracking-wider px-5 py-3">Item</th>

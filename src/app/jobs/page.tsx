@@ -41,12 +41,12 @@ export default function JobsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">Jobs</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-charcoal-900">Jobs</h1>
           <p className="text-sm text-stone-500 mt-0.5">Track and manage all your hardscaping projects</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-2 sm:gap-3 flex-wrap">
           <div className="flex bg-stone-100 rounded-lg p-0.5">
             <button onClick={() => setView("grid")} className={`p-1.5 rounded-md ${view === "grid" ? "bg-white shadow-sm" : ""}`}>
               <LayoutGrid className="w-4 h-4 text-charcoal-700" />
@@ -56,30 +56,30 @@ export default function JobsPage() {
             </button>
           </div>
           <button className="px-3 py-2 bg-white border border-stone-200 rounded-lg text-sm text-charcoal-700 hover:bg-stone-50 flex items-center gap-2">
-            <Filter className="w-4 h-4" /> Filter
+            <Filter className="w-4 h-4" /> <span className="hidden sm:inline">Filter</span>
           </button>
-          <button className="px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 flex items-center gap-2">
+          <button className="px-3 sm:px-4 py-2 bg-charcoal-900 rounded-lg text-sm font-medium text-cream-100 hover:bg-charcoal-800 flex items-center gap-2">
             <Plus className="w-4 h-4" /> New Job
           </button>
         </div>
       </div>
 
       {/* AI Recommendation */}
-      <div className="bg-gradient-to-r from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Sparkles className="w-5 h-5 text-accent" />
+      <div className="bg-gradient-to-r from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-start sm:items-center gap-3">
+          <Sparkles className="w-5 h-5 text-accent flex-shrink-0 mt-0.5 sm:mt-0" />
           <div>
             <p className="text-sm font-medium text-charcoal-900">AI Optimizer: JOB-1024 is 2 days ahead of schedule</p>
             <p className="text-xs text-stone-500">Team Alpha could start JOB-1019 (Williams Pool Deck) 3 days early. Want me to update the schedule?</p>
           </div>
         </div>
-        <button className="px-3 py-1.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors whitespace-nowrap">
+        <button className="px-3 py-1.5 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-dark transition-colors whitespace-nowrap w-full sm:w-auto">
           Optimize Schedule
         </button>
       </div>
 
       {/* Jobs Grid */}
-      <div className={view === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" : "space-y-3"}>
+      <div className={view === "grid" ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" : "space-y-3"}>
         {jobs.map((job) => (
           <div key={job.id} className="bg-white rounded-xl border border-stone-200 p-5 hover:shadow-md transition-shadow cursor-pointer">
             <div className="flex items-start justify-between mb-3">
